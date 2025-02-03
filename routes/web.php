@@ -1,0 +1,8 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MarchentController;
+
+Route::get('/', [MarchentController::class, 'showRegisterForm']);
+Route::get('/login', [MarchentController::class, 'login']);
+Route::resource('marchent', MarchentController::class);
