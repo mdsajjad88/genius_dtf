@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Models\User;
 class MarchentController extends Controller
 {
     /**
@@ -14,7 +14,8 @@ class MarchentController extends Controller
         //
     }
 
-    public function showRegisterForm(){
+    public function showRegisterForm()
+    {
         return view('marchent.register');
     }
     /**
@@ -30,26 +31,53 @@ class MarchentController extends Controller
      */
     public function store(Request $request)
     {
+        try {
+            \Log::info('Request data: ' . json_encode($request->all()));
 
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:marchents',
-            'shop_name' => 'required|string|max:255',
-            'password' => 'required|min:6',
-        ]);
+            // Validate input
+            $validated = $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|unique:users',
+                'shop_name' => 'required|string|max:255',
+                'password' => 'required|min:6',
+            ]);
 
-        User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'shop_name' => $request->shop_name,
-            'password' => bcrypt($request->password), // Encrypt password
-        ]);
+            // Create user
+            User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'shop_name' => $request->shop_name,
+                'password' => bcrypt($request->password),
+            ]);
 
-        return redirect('/register')->with('success', 'Registration successful!');
+            // Return success response for AJAX
+            return response()->json([
+                'success' => true,
+                'message' => 'Registration successful!'
+            ]);
 
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Get validation errors and return as response
+            return response()->json([
+                'success' => false,
+                'errors' => $e->errors()
+            ], 422); // HTTP Status 422 for validation errors
+        } catch (\Exception $e) {
+            // Log the error
+            \Log::error('Registration Error: ' . $e->getMessage());
+
+            // Return error response for AJAX
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong. Please try again later!'
+            ], 500);
+        }
     }
 
-    public function login(){
+
+
+    public function login()
+    {
         return view('marchent.login');
     }
     /**
