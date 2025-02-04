@@ -26,7 +26,7 @@
                         <h3>Merchant Register</h3>
                     </div>
                     <div class="card-body">
-                        <form id="registrationForm" action="{{ route('marchent.store') }}" method="post">
+                        <form id="registrationForm" action="{{ url('register') }}" method="post">
                             @csrf
 
                             <div class="mb-3">
@@ -54,6 +54,7 @@
                             </div>
 
                             <button type="submit" class="btn btn-danger w-100">Register</button>
+                            <a href="{{route('login')}}">Login <small>If Already Registered</small></a>
                         </form>
                     </div>
                 </div>
@@ -69,66 +70,73 @@
 
     <script>
         $(document).ready(function() {
-    $(document).on('submit', 'form#registrationForm', function(e) {
-        e.preventDefault(); // Prevent default form submission
-        var form = $(this);
-        var data = form.serialize(); // Serialize form data
-        var url = form.attr('action'); // Get form action URL
-
-        $.ajax({
-            method: 'POST',
-            url: url,
-            dataType: 'json',
-            data: data,
-            beforeSend: function() {
-                form.find('button[type="submit"]').prop('disabled', true); // Disable button
-            },
-            success: function(response) {
-                if (response.success === true) {
-                    Swal.fire({
-                        title: 'Success!',
-                        text: response.message,
-                        icon: 'success',
-                        confirmButtonText: 'OK'
-                    }).then(() => {
-                        $('#registrationForm')[0].reset();
-                        window.location.href = '{{ route('login') }}';
-                    });
-                } else {
-                    Swal.fire({
-                        title: 'Error!',
-                        text: response.message,
-                        icon: 'error',
-                        confirmButtonText: 'OK'
-                    });
+            // Set up AJAX with CSRF token
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
-            },
-            error: function(xhr) {
-                let errorMsg = "Something went wrong. Please try again.";
+            });
 
-                // Check if validation errors are returned
-                if (xhr.responseJSON && xhr.responseJSON.errors) {
-                    errorMsg = '';
-                    // Loop through validation errors and display them
-                    $.each(xhr.responseJSON.errors, function(key, value) {
-                        errorMsg += value[0] + "\n"; // Combine all error messages
-                    });
-                }
+            $(document).on('submit', 'form#registrationForm', function(e) {
+                e.preventDefault(); // Prevent normal form submission
+                var form = $(this);
+                var data = form.serialize();
+                var url = form.attr('action');
 
-                Swal.fire({
-                    title: 'Validation Error!',
-                    text: errorMsg,
-                    icon: 'error',
-                    confirmButtonText: 'OK'
+                $.ajax({
+                    method: 'POST',
+                    url: url,
+                    dataType: 'json',
+                    data: data,
+                    beforeSend: function() {
+                        form.find('button[type="submit"]').prop('disabled', true);
+                    },
+                    success: function(response) {
+                        form.find('button[type="submit"]').prop('disabled', false);
+
+                        if (response.success === true) {
+                            Swal.fire({
+                                title: 'Success!',
+                                text: response.message,
+                                icon: 'success',
+                                confirmButtonText: 'OK'
+                            }).then(() => {
+                                $('#registrationForm')[0].reset();
+                                window.location.href = '{{ route('login') }}'; // Redirect to login page
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: response.message,
+                                icon: 'error',
+                                confirmButtonText: 'OK'
+                            });
+                        }
+                    },
+                    error: function(xhr) {
+                        form.find('button[type="submit"]').prop('disabled', false);
+
+                        let errorMsg = "Something went wrong. Please try again.";
+
+                        if (xhr.responseJSON && xhr.responseJSON.errors) {
+                            errorMsg = '';
+                            $.each(xhr.responseJSON.errors, function(key, value) {
+                                errorMsg += value[0] + "\n";
+                            });
+                        }
+
+                        Swal.fire({
+                            title: 'Validation Error!',
+                            text: errorMsg,
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    }
                 });
-
-                form.find('button[type="submit"]').prop('disabled', false); // Re-enable button
-            }
+            });
         });
-    });
-});
-
     </script>
+
 
 </body>
 

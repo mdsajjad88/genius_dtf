@@ -11,7 +11,7 @@ class MarchentController extends Controller
      */
     public function index()
     {
-        //
+        return view('marchent.dashboard');
     }
 
     public function showRegisterForm()

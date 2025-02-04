@@ -27,52 +27,64 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
-    {
-        try {
-            \Log::info('Request data: ' . json_encode($request->all()));
+    public function store(Request $request)
+{
+    try {
+        \Log::info('Request data: ' . json_encode($request->all()));
 
-            // Validate input
-            $validated = $request->validate([
-                'name' => 'required|string|max:255',
-                'email' => 'required|email|unique:users',
-                'shop_name' => 'required|string|max:255',
-                'password' => 'required|min:6',
-            ]);
+        // Validate input
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users',
+            'shop_name' => 'required|string|max:255',
+            'password' => 'required|min:6',
+        ]);
 
-            // Create user
-           $user = User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'shop_name' => $request->shop_name,
-                'password' => Hash::make($request->password),
-            ]);
+        // Create user
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'shop_name' => $request->shop_name,
+            'password' => Hash::make($request->password),
+        ]);
 
-            event(new Registered($user));
+        event(new Registered($user));
 
-            // Auth::login($user);
-            // Return success response for AJAX
+        // Check if it's an AJAX request
+        if ($request->expectsJson()) {
             return response()->json([
                 'success' => true,
-                'message' => 'Registration successful!'
+                'message' => 'Registration successful!',
             ]);
+        }
 
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            // Get validation errors and return as response
+        // Regular form submission (non-AJAX)
+        return redirect()->route('login')->with('success', 'Registration successful!');
+
+    } catch (\Illuminate\Validation\ValidationException $e) {
+        // Handle validation errors for AJAX
+        if ($request->expectsJson()) {
             return response()->json([
                 'success' => false,
-                'errors' => $e->errors()
-            ], 422); // HTTP Status 422 for validation errors
-        } catch (\Exception $e) {
-            // Log the error
-            \Log::error('Registration Error: ' . $e->getMessage());
+                'errors' => $e->errors(),
+            ], 422);
+        }
 
-            // Return error response for AJAX
+        // Redirect back with validation errors
+        return back()->withErrors($e->errors())->withInput();
+    } catch (\Exception $e) {
+        \Log::error('Registration Error: ' . $e->getMessage());
+
+        if ($request->expectsJson()) {
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage(),
+                'message' => 'An error occurred during registration.',
             ], 500);
         }
 
+        return redirect()->route('register')->with('error', 'An error occurred during registration.');
     }
+}
+
+
 }

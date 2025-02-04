@@ -43,7 +43,7 @@
     <div class="row">
         <!-- Sidebar -->
         <div class="col-md-3 sidebar">
-            <h4>Admin Dashboard</h4>
+            <h4>Marchent Dashboard</h4>
             <a href="#" class="tab-link active-tab" data-target="dashboard-tab">Dashboard</a>
             <a href="#" class="tab-link" data-target="profile-tab">Profile</a>
             <a href="#" class="tab-link" data-target="settings-tab">Settings</a>

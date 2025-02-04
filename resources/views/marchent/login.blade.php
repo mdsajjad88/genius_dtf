@@ -22,8 +22,25 @@
 </head>
 <body class="bg-light">
 
+
     <div class="container">
         <div class="row justify-content-center">
+            @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+                @if (session('status'))
+                <div class="alert alert-info mb-4">
+                    {{ session('status') }}
+                </div>
+
+                @endif
             <div class="col-md-6">
                 <div class="card shadow-lg">
                     <div class="card-header text-center bg-primary text-white">
@@ -31,21 +48,23 @@
                     </div>
                     <div class="card-body">
                         <!-- Login Form -->
-                        <form id="loginForm" action="#" method="POST">
+                        <form action="{{ url('login') }}" method="POST">
                             @csrf
                             <input type="hidden" id="userType" name="user_type" value="admin">
 
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="email" name="email" required>
+                                <input type="email" class="form-control" id="email" placeholder="Enter admin email" name="email" required>
                             </div>
 
                             <div class="mb-3">
                                 <label for="password" class="form-label">Password</label>
-                                <input type="password" class="form-control" id="password" name="password" required>
+                                <input type="password" class="form-control" id="password" name="password" placeholder="Enter Password" required>
                             </div>
 
                             <button type="submit" class="btn btn-primary w-100">Login</button>
+                           <a href="{{'register'}}">Registration, If Not registered!</a>
+
                         </form>
 
                         <!-- Toggle Buttons -->
@@ -66,19 +85,20 @@
     <script>
         $(document).ready(function() {
             $('#adminBtn').click(function() {
-                $('#loginForm').attr('action', "#");
                 $('#userType').val('admin');
 
                 $('#adminBtn').addClass('btn-primary active').removeClass('btn-secondary');
-                $('#merchantBtn').addClass('btn-secondary').removeClass('btn-success active');
+                $('#merchantBtn').addClass('btn-secondary').removeClass('btn-primary active');
+                $("#email").attr("placeholder", "Use admin email");
+
             });
 
             $('#merchantBtn').click(function() {
-                $('#loginForm').attr('action', "#");
                 $('#userType').val('marchent');
-
-                $('#merchantBtn').addClass('btn-success active').removeClass('btn-secondary');
+                $('#merchantBtn').addClass('btn-primary active').removeClass('btn-secondary');
                 $('#adminBtn').addClass('btn-secondary').removeClass('btn-primary active');
+                $("#email").attr("placeholder", "Use merchant email");
+
             });
         });
     </script>
