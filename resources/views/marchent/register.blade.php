@@ -91,8 +91,8 @@
                         icon: 'success',
                         confirmButtonText: 'OK'
                     }).then(() => {
-                        $('#registrationForm')[0].reset(); 
-                        window.location.href = '{{ route('login.view') }}';
+                        $('#registrationForm')[0].reset();
+                        window.location.href = '{{ route('login') }}';
                     });
                 } else {
                     Swal.fire({
