@@ -24,13 +24,21 @@
 
         <div class="card shadow-lg border-0 rounded-3">
             <div class="card-header bg-primary text-white text-center">
-                <h4 class="mb-0">Create New Store</h4>
+                <h4 class="mb-0">Create New Category</h4>
             </div>
             <div class="card-body">
                 <form action="{{ route('store.store') }}" method="POST">
                     @csrf
                     <div class="mb-3">
+                        <label for="">Select Store</label>
+                        <select name="store_id" id="" class="form-control">
+                            <option value="">Select Store</option>
+                            @foreach ($stores as $store)
+                            <option value="{{$store->id}}">{{$store->name}}</option>
+                            @endforeach
+                        </select>
                         <label for="name" class="form-label">Store Name</label>
+
                         <input type="text" class="form-control @error('name') is-invalid @enderror"
                                id="name" name="name" placeholder="Enter Store Name" value="{{ old('name') }}" required>
 

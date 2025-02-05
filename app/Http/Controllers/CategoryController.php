@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
+use App\Models\Store;
 class CategoryController extends Controller
 {
     /**
@@ -13,7 +13,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+
+        return view('marchent.category.index');
     }
 
     /**
@@ -21,7 +22,11 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        $stores = Store::get();
+        if(auth()->user()->role != 'admin'){
+            $stores->where('created_by', auth()->user()->id);
+        }
+        return view('marchent.category.create', compact('stores'));
     }
 
     /**

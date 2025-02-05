@@ -33,17 +33,27 @@ class StoreController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-        ]);
-       $store = new Store();
-       $store->name = $request->name;
-       $store->created_by = auth()->user()->id;
-       $store->save();
-       return redirect()->route('store.list')->with('success', 'Store Added Successfully');
+{
+    // Validate request
+    $request->validate([
+        'name' => 'required|string|max:255',
+    ]);
 
+    try {
+        // Create and save the store
+        $store = new Store();
+        $store->name = $request->name;
+        $store->created_by = auth()->id();
+        $store->save();
+
+        // Redirect with success message if store is added successfully
+        return redirect()->route('store.list')->with('success', 'Store Added Successfully');
+    } catch (\Exception $e) {
+        // Redirect back with error message if something goes wrong
+        return redirect()->back()->with('error', 'Something went wrong! Please try again.');
     }
+}
+
 
     /**
      * Display the specified resource.

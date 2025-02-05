@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MarchentController;
 use App\Http\Controllers\StoreController;
+use App\Http\Controllers\CategoryController;
 Route::get('/', function () {
     return view('marchent.register');
 });
@@ -23,6 +24,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/marchent/store-list', [StoreController::class, 'index'])->name('store.list');
     Route::get('/marchent/create-store', [StoreController::class, 'create'])->name('store.create');
     Route::post('/marchent/store-store', [StoreController::class, 'store'])->name('store.store');
+    Route::get('/marchent/category-list', [CategoryController::class, 'index'])->name('category.list');
+    Route::get('/marchent/create-category', [CategoryController::class, 'create'])->name('category.create');
+    Route::get('/marchent/store-category', [CategoryController::class, 'store'])->name('category.store');
 
 });
 

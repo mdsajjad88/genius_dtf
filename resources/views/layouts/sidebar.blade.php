@@ -2,6 +2,8 @@
     <h4>Merchant Dashboard</h4>
     <a href="{{ route('store.list') }}" class="tab-link {{ request()->routeIs('store.list') ? 'active' : '' }}">Store List</a>
     <a href="{{ route('store.create') }}" class="tab-link {{ request()->routeIs('store.create') ? 'active' : '' }}">Create Store</a>
+    <a href="{{ route('category.list') }}" class="tab-link {{ request()->routeIs('category.list') ? 'active' : '' }}">Category List</a>
+    <a href="{{ route('category.create') }}" class="tab-link {{ request()->routeIs('category.create') ? 'active' : '' }}">Category Create</a>
 </div>
 
 <style>
