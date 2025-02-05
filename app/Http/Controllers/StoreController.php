@@ -2,17 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\User;
-class AdminController extends Controller
+use App\Models\Store;
+use Illuminate\Support\Facades\Session;
+class StoreController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $marchents = User::where('role', 'marchent')->get();
-        return view('admin.index', compact('marchents'));
+        $stores = Store::with('creator')->get();
+        if(auth()->user()->role != 'admin'){
+            $stores = $stores->where('created_by', auth()->user()->id);
+        }
+        return view('marchent.store.index', compact('stores'));
     }
 
     /**
@@ -20,7 +25,8 @@ class AdminController extends Controller
      */
     public function create()
     {
-        //
+
+        return view('marchent.store.create', );
     }
 
     /**
@@ -28,7 +34,15 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+       $store = new Store();
+       $store->name = $request->name;
+       $store->created_by = auth()->user()->id;
+       $store->save();
+       return redirect()->route('store.list')->with('success', 'Store Added Successfully');
+
     }
 
     /**

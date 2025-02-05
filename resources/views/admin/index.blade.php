@@ -44,7 +44,7 @@
         <!-- Sidebar -->
         <div class="col-md-3 sidebar">
             <h4>Admin Dashboard</h4>
-            <a href="#" class="tab-link active-tab" data-target="dashboard-tab">Dashboard</a>
+            <a href="#" class="tab-link active-tab" data-target="dashboard-tab">User Manage</a>
             <a href="#" class="tab-link" data-target="profile-tab">Profile</a>
             <a href="#" class="tab-link" data-target="settings-tab">Settings</a>
         </div>
@@ -73,8 +73,30 @@
             <!-- Tab Content -->
             <div class="tab-content">
                 <div id="dashboard-tab" class="tab-pane active">
-                    <h4>📊 Dashboard Overview</h4>
-                    <p>This is the main dashboard where you can see statistics and reports.</p>
+                    <h2 class="text-center">Marchent List</h2>
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>User Name</th>
+                                <th>User Email</th>
+
+                                <th>User Role</th>
+                                <th>Shop Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($marchents as $marchent)
+                                <tr>
+                                    <td>{{$marchent->name}}</td>
+                                    <td>{{$marchent->email}}</td>
+                                    <td>{{$marchent->role}}</td>
+                                    <td>{{$marchent->shop_name}}</td>
+                                </tr>
+                            @empty
+
+                            @endforelse
+                        </tbody>
+                    </table>
                 </div>
 
                 <div id="profile-tab" class="tab-pane" style="display: none;">

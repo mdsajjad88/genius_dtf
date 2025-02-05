@@ -53,19 +53,11 @@ class AuthenticatedSessionController extends Controller
         // If both are correct, attempt login
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-
-            // // Redirect based on role
-            // return redirect()->intended(match ($user->role) {
-            //     'admin' => route('dashboard'),
-            //     'merchant' => route('marchent.index'),
-            //     'user' => route('dashboard'),
-            //     default => route('dashboard'),
-            // });
             if ($user->role == 'marchent') {
-                return redirect()->route('marchent.index');
+                return redirect()->route('marchent.dashboard.index');
             }
             if ($user->role == 'admin') {
-                return redirect()->route('admin-dashboard.index');
+                return redirect()->route('admin.dashboard.index');
             }
             else{
                 return redirect()->route('dashboard');
