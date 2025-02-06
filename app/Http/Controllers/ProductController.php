@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
+use App\Models\Store;
 class ProductController extends Controller
 {
     /**
@@ -13,7 +13,11 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        $products = Product::with('creator', 'store', 'category')->get();
+        if(auth()->user()->role != 'admin'){
+            $products = $products->where('created_by', auth()->user()->id);
+        }
+        return view('marchent.product.index', compact('products'));
     }
 
     /**
@@ -21,7 +25,11 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        $stores = Store::get();
+        if(auth()->user()->role != 'admin'){
+            $stores->where('created_by', auth()->user()->id);
+        }
+        return view('marchent.product.create', compact('stores'));
     }
 
     /**

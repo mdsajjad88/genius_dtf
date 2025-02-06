@@ -1,6 +1,6 @@
 @extends('layouts.app2')
 
-@section('title', 'Store List')
+@section('title', 'Category List')
 
 @section('content')
     <div class="container-fluid">
@@ -21,8 +21,18 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @forelse ($categories as $category)
+                            <tr>
+                                <td>{{$category->store->name}}</td>
+                                <td>{{$category->name}}</td>
+                                <td>{{$category->creator->name}}</td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="3" class="text-center">No Category</td>
+                            </tr>
+                        @endforelse
 
-                        
                     </tbody>
                 </table>
             </div>

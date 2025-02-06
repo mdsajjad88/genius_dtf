@@ -4,6 +4,8 @@
     <a href="{{ route('store.create') }}" class="tab-link {{ request()->routeIs('store.create') ? 'active' : '' }}">Create Store</a>
     <a href="{{ route('category.list') }}" class="tab-link {{ request()->routeIs('category.list') ? 'active' : '' }}">Category List</a>
     <a href="{{ route('category.create') }}" class="tab-link {{ request()->routeIs('category.create') ? 'active' : '' }}">Category Create</a>
+    <a href="{{ route('product.list') }}" class="tab-link {{ request()->routeIs('product.list') ? 'active' : '' }}">Product List</a>
+    <a href="{{ route('product.create') }}" class="tab-link {{ request()->routeIs('product.create') ? 'active' : '' }}">Product Create</a>
 </div>
 
 <style>

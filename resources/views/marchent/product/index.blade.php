@@ -1,6 +1,6 @@
 @extends('layouts.app2')
 
-@section('title', 'Store List')
+@section('title', 'product List')
 
 @section('content')
     <div class="container-fluid">
@@ -11,26 +11,30 @@
                         {{ session('success') }}
                     </div>
                 @endif
-                <h4 class="text-center">Store List</h4>
+                <h4 class="text-center">product List</h4>
                 <table class="table table-striped table-bordered">
                     <thead>
                         <tr>
                             <th>Store Name</th>
+                            <th>Category Name</th>
+                            <th>Product Name</th>
                             <th>Created By</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ($stores as $store)
+                        @forelse ($products as $product)
                             <tr>
-                                <td> {{$store->name}} </td>
-                                <td> {{$store->creator->name??''}} </td>
+                                <td>{{$product->store->name}}</td>
+                                <td>{{$product->category->name}}</td>
+                                <td>{{$product->name}}</td>
+                                <td>{{$product->creator->name}}</td>
                             </tr>
                         @empty
-
+                            <tr>
+                                <td colspan="4" class="text-center">No Products</td>
+                            </tr>
                         @endforelse
-                        <tr>
-                            <td colspan="2" class="text-center">No Store</td>
-                        </tr>
+
                     </tbody>
                 </table>
             </div>

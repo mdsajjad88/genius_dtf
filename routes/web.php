@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MarchentController;
@@ -21,12 +22,24 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard.index');
     Route::get('/marchent/dashboard', [MarchentController::class, 'index'])->name('marchent.dashboard.index');
-    Route::get('/marchent/store-list', [StoreController::class, 'index'])->name('store.list');
-    Route::get('/marchent/create-store', [StoreController::class, 'create'])->name('store.create');
-    Route::post('/marchent/store-store', [StoreController::class, 'store'])->name('store.store');
-    Route::get('/marchent/category-list', [CategoryController::class, 'index'])->name('category.list');
-    Route::get('/marchent/create-category', [CategoryController::class, 'create'])->name('category.create');
-    Route::get('/marchent/store-category', [CategoryController::class, 'store'])->name('category.store');
+    Route::controller(StoreController::class)->group(function(){
+        Route::get('/marchent/store-list', 'index')->name('store.list');
+        Route::get('/marchent/create-store', 'create')->name('store.create');
+        Route::post('/marchent/store-store', 'store')->name('store.store');
+    });
+
+    Route::controller(CategoryController::class)->group(function(){
+        Route::get('/marchent/category-list',  'index')->name('category.list');
+        Route::get('/marchent/create-category', 'create')->name('category.create');
+        Route::post('/marchent/store-category',  'store')->name('category.store');
+    });
+
+    Route::controller(ProductController::class)->group(function(){
+        Route::get('/marchent/product-list',  'index')->name('product.list');
+        Route::get('/marchent/create-product', 'create')->name('product.create');
+        Route::post('/marchent/store-product',  'store')->name('product.store');
+    });
+
 
 });
 

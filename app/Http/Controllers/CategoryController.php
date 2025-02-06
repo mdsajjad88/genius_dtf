@@ -13,8 +13,11 @@ class CategoryController extends Controller
      */
     public function index()
     {
-
-        return view('marchent.category.index');
+        $categories = Category::with('creator', 'store')->get();
+        if(auth()->user()->role != 'admin'){
+            $categories = $categories->where('created_by', auth()->user()->id);
+        }
+        return view('marchent.category.index', compact('categories'));
     }
 
     /**
@@ -34,7 +37,21 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'store_id' => 'required',
+        ]);
+
+        try {
+            $category = new Category();
+            $category->store_id = $request->store_id;
+            $category->name = $request->name;
+            $category->created_by = auth()->id();
+            $category->save();
+            return redirect()->route('category.list')->with('success', 'Category Added Successfully');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Something went wrong! Please try again.');
+        }
     }
 
     /**
