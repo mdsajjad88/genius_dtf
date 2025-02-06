@@ -60,7 +60,7 @@ class AuthenticatedSessionController extends Controller
                 return redirect()->route('admin.dashboard.index');
             }
             else{
-                return redirect()->route('dashboard');
+                return redirect()->route('marchent.dashboard.index');
             }
         }
 

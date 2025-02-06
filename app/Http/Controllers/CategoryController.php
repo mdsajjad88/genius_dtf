@@ -23,6 +23,12 @@ class CategoryController extends Controller
     /**
      * Show the form for creating a new resource.
      */
+    public function showHomePage(){
+        $categories = Category::with('products')->get();
+        // Return the Blade view with data
+        return view('home', compact('categories'));
+    }
+
     public function create()
     {
         $stores = Store::get();
