@@ -31,7 +31,7 @@
                     @csrf
                     <div class="mb-3">
                         <label for="">Select Store</label>
-                        <select name="store_id" id="" class="form-control">
+                        <select name="store_id" id="store_id" class="form-control">
                             <option value="">Select Store</option>
                             @foreach ($stores as $store)
                             <option value="{{$store->id}}">{{$store->name}}</option>
@@ -39,7 +39,7 @@
                         </select>
                         <label for="">Select Category</label>
                         <select name="category_id" id="category_id" class="form-control">
-
+                            <option value="">Select Category</option>
                         </select>
                         <label for="name" class="form-label">Product Name</label>
 
@@ -57,4 +57,33 @@
 </div>
 
 @endsection
+@push('scripts')
+    <script>
+        $(document).ready(function() {
+            $('#store_id').change(function() {
+                let storeId = $(this).val();
+                let categoryDropdown = $('#category_id');
+
+                categoryDropdown.empty();
+                categoryDropdown.append('<option value="">Select Category</option>');
+
+                if (storeId) {
+                    $.ajax({
+                        url: "{{ route('get.categories') }}",
+                        type: "GET",
+                        data: { store_id: storeId },
+                        success: function(response) {
+                            $.each(response, function(key, category) {
+                                categoryDropdown.append('<option value="' + category.id + '">' + category.name + '</option>');
+                            });
+                        },
+                        error: function(xhr) {
+                            console.log(xhr.responseText);
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+@endpush
 

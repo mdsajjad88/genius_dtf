@@ -14,7 +14,7 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::with('creator', 'store')->get();
-        if(auth()->user()->role != 'admin'){
+        if (auth()->user()->role != 'admin') {
             $categories = $categories->where('created_by', auth()->user()->id);
         }
         return view('marchent.category.index', compact('categories'));
@@ -26,7 +26,7 @@ class CategoryController extends Controller
     public function create()
     {
         $stores = Store::get();
-        if(auth()->user()->role != 'admin'){
+        if (auth()->user()->role != 'admin') {
             $stores->where('created_by', auth()->user()->id);
         }
         return view('marchent.category.create', compact('stores'));
@@ -85,4 +85,10 @@ class CategoryController extends Controller
     {
         //
     }
+    public function getCategoriesByStore(Request $request)
+    {
+        $categories = Category::where('store_id', $request->store_id)->get();
+        return response()->json($categories);
+    }
+
 }

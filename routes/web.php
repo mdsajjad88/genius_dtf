@@ -32,12 +32,15 @@ Route::middleware('auth')->group(function () {
         Route::get('/marchent/category-list',  'index')->name('category.list');
         Route::get('/marchent/create-category', 'create')->name('category.create');
         Route::post('/marchent/store-category',  'store')->name('category.store');
+        Route::get('/get-categories', 'getCategoriesByStore')->name('get.categories');
+
     });
 
     Route::controller(ProductController::class)->group(function(){
         Route::get('/marchent/product-list',  'index')->name('product.list');
         Route::get('/marchent/create-product', 'create')->name('product.create');
         Route::post('/marchent/store-product',  'store')->name('product.store');
+
     });
 
 

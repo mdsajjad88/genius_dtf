@@ -11,7 +11,7 @@
                         {{ session('success') }}
                     </div>
                 @endif
-                <h4 class="text-center">product List</h4>
+                <h4 class="text-center">Product List</h4>
                 <table class="table table-striped table-bordered">
                     <thead>
                         <tr>
