@@ -45,16 +45,16 @@ class ProductController extends Controller
         ]);
 
         try {
-            $product = new Product(); // Changed variable name to $product for clarity
+            $product = new Product();
             $product->store_id = $request->store_id;
-            $product->category_id = $request->category_id; // Fix the incorrect field name
+            $product->category_id = $request->category_id;
             $product->name = $request->name;
             $product->created_by = auth()->id();
             $product->save();
 
             return redirect()->route('product.list')->with('success', 'Product Added Successfully');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Something went wrong! ' . $e->getMessage()); // Show actual error
+            return redirect()->back()->with('error', 'Something went wrong! ' . $e->getMessage()); 
         }
     }
     public function getProductsByCategory(Request $request) {

@@ -31,8 +31,6 @@ class RegisteredUserController extends Controller
 {
     try {
         \Log::info('Request data: ' . json_encode($request->all()));
-
-        // Validate input
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users',
@@ -40,7 +38,6 @@ class RegisteredUserController extends Controller
             'password' => 'required|min:6',
         ]);
 
-        // Create user
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -49,8 +46,6 @@ class RegisteredUserController extends Controller
         ]);
 
         event(new Registered($user));
-
-        // Check if it's an AJAX request
         if ($request->expectsJson()) {
             return response()->json([
                 'success' => true,
@@ -62,19 +57,15 @@ class RegisteredUserController extends Controller
         return redirect()->route('login')->with('success', 'Registration successful!');
 
     } catch (\Illuminate\Validation\ValidationException $e) {
-        // Handle validation errors for AJAX
         if ($request->expectsJson()) {
             return response()->json([
                 'success' => false,
                 'errors' => $e->errors(),
             ], 422);
         }
-
-        // Redirect back with validation errors
         return back()->withErrors($e->errors())->withInput();
     } catch (\Exception $e) {
         \Log::error('Registration Error: ' . $e->getMessage());
-
         if ($request->expectsJson()) {
             return response()->json([
                 'success' => false,

@@ -82,8 +82,6 @@
             data: { category_id: categoryId },
             success: function(response) {
                 $('#productContainer').html(response);
-
-                // Apply fade-in effect to each product card
                 $('.product-card').each(function(index) {
                     $(this).delay(100 * index).queue(function(next) {
                         $(this).addClass('fade-in');
@@ -93,16 +91,13 @@
             }
         });
     }
-
-    // Load first category products by default
     var firstCategory = $('#categoryTabs .nav-link.active').data('category');
     if (firstCategory) {
         loadProducts(firstCategory);
     }
 
-    // Handle category click event, but EXCLUDE other links
     $('.nav-link[data-category]').click(function(e){
-        e.preventDefault();  // Prevent default only for category links
+        e.preventDefault();
         $('.nav-link').removeClass('active');
         $(this).addClass('active');
         var categoryId = $(this).data('category');

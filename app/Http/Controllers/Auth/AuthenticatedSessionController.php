@@ -33,8 +33,6 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request): RedirectResponse
     {
         $credentials = $request->only('email', 'password');
-
-        // Check if email exists
         $user = \App\Models\User::where('email', $credentials['email'])->first();
 
         if (!$user) {
@@ -43,14 +41,12 @@ class AuthenticatedSessionController extends Controller
             ])->withInput();
         }
 
-        // Check if password is incorrect
         if (!\Illuminate\Support\Facades\Hash::check($credentials['password'], $user->password)) {
             return back()->withErrors([
                 'password' => 'The password is incorrect.',
             ])->withInput();
         }
 
-        // If both are correct, attempt login
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
             if ($user->role == 'marchent') {

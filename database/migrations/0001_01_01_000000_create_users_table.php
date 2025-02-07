@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('shop_name')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->boolean('is_login')->default(0);
+            $table->boolean('is_login')->default(1);
             $table->boolean('role')->default('merchant');
             $table->rememberToken();
             $table->timestamps();

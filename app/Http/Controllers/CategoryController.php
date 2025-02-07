@@ -25,7 +25,6 @@ class CategoryController extends Controller
      */
     public function showHomePage(){
         $categories = Category::with('products')->get();
-        // Return the Blade view with data
         return view('home', compact('categories'));
     }
 
