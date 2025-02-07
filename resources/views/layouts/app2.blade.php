@@ -18,7 +18,11 @@
             <!-- Main Content -->
             <div class="col-md-9 p-4">
                 <div class="d-flex justify-content-between">
-                    <h3>Welcome, {{ Auth::user()->name }}</h3>
+                    <div>
+                        <h3>Welcome, {{ Auth::user()->name }} </h3>
+                        in <b>@if(auth()->user()->role == 'merchant')  {{ Auth::user()->shop_name }} @endif</b>
+
+                    </div>
                     <div class="dropdown">
                         <button class="btn btn-danger dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Logout
