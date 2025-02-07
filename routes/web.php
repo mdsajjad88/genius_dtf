@@ -11,6 +11,8 @@ Route::get('/', function () {
     return view('marchent.register');
 });
 Route::get('/', [CategoryController::class, 'showHomePage'])->name('home');
+Route::get('/products-by-category', [ProductController::class, 'getProductsByCategory'])->name('products.byCategory');
+
 Route::get('/dashboard', function () {
     return view('marchent.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');

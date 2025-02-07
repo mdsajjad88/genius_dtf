@@ -31,7 +31,7 @@
                     @csrf
                     <div class="mb-3">
                         <label for="">Select Store</label>
-                        <select name="store_id" id="" class="form-control">
+                        <select name="store_id" id="" class="form-control" required>
                             <option value="">Select Store</option>
                             @foreach ($stores as $store)
                             <option value="{{$store->id}}">{{$store->name}}</option>

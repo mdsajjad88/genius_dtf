@@ -1,11 +1,15 @@
 <div class="col-md-3 sidebar p-3 bg-light" style="min-height: 600px;">
-    <h4>Merchant Dashboard</h4>
+    <h4> {{ucfirst(auth()->user()->role)}} Dashboard</h4>
+    @if(auth()->user()->role == 'admin')
+    <a href="{{ route('admin.dashboard.index') }}" class="tab-link {{ request()->routeIs('admin.dashboard.index') ? 'active' : '' }}">Merchant List</a>
+    @elseif(auth()->user()->role == 'merchant')
     <a href="{{ route('store.list') }}" class="tab-link {{ request()->routeIs('store.list') ? 'active' : '' }}">Store List</a>
     <a href="{{ route('store.create') }}" class="tab-link {{ request()->routeIs('store.create') ? 'active' : '' }}">Create Store</a>
     <a href="{{ route('category.list') }}" class="tab-link {{ request()->routeIs('category.list') ? 'active' : '' }}">Category List</a>
     <a href="{{ route('category.create') }}" class="tab-link {{ request()->routeIs('category.create') ? 'active' : '' }}">Category Create</a>
     <a href="{{ route('product.list') }}" class="tab-link {{ request()->routeIs('product.list') ? 'active' : '' }}">Product List</a>
     <a href="{{ route('product.create') }}" class="tab-link {{ request()->routeIs('product.create') ? 'active' : '' }}">Product Create</a>
+    @endif
 </div>
 
 <style>

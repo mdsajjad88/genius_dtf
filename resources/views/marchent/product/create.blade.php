@@ -31,14 +31,14 @@
                     @csrf
                     <div class="mb-3">
                         <label for="">Select Store</label>
-                        <select name="store_id" id="store_id" class="form-control">
+                        <select name="store_id" id="store_id" class="form-control" required>
                             <option value="">Select Store</option>
                             @foreach ($stores as $store)
                             <option value="{{$store->id}}">{{$store->name}}</option>
                             @endforeach
                         </select>
                         <label for="">Select Category</label>
-                        <select name="category_id" id="category_id" class="form-control">
+                        <select name="category_id" id="category_id" class="form-control" required>
                             <option value="">Select Category</option>
                         </select>
                         <label for="name" class="form-label">Product Name</label>

@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Store;
+use App\Models\Category;
 class ProductController extends Controller
 {
     /**
@@ -55,6 +56,29 @@ class ProductController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Something went wrong! ' . $e->getMessage()); // Show actual error
         }
+    }
+    public function getProductsByCategory(Request $request) {
+        $categoryId = $request->category_id;
+        $category = Category::with('products')->find($categoryId);
+
+        $html = '';
+        if ($category && $category->products->count() > 0) {
+            foreach ($category->products as $product) {
+                $html .= '<div class="col-md-3 mb-3 product-card">
+                            <div class="card">
+                                <div class="card-icon"><i class="fas fa-box-open"></i></div>
+                                <div class="card-body">
+                                    <h5 class="card-title">'.$product->name.'</h5>
+                                    <p class="card-text"><strong>Price:</strong> $'.$product->price.'</p>
+                                </div>
+                            </div>
+                          </div>';
+            }
+        } else {
+            $html = '<p class="text-center">No products available in this category.</p>';
+        }
+
+        return response()->json($html);
     }
 
 
