@@ -11,7 +11,7 @@ class AdminController extends Controller
      */
     public function index()
     {
-        $marchents = User::where('role', 'marchent')->get();
+        $marchents = User::where('role', 'merchant')->get();
         return view('admin.index', compact('marchents'));
     }
 

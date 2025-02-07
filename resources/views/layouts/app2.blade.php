@@ -20,7 +20,7 @@
                 <div class="d-flex justify-content-between">
                     <div>
                         <h3>Welcome, {{ Auth::user()->name }} </h3>
-                        in <b>@if(auth()->user()->role == 'merchant')  {{ Auth::user()->shop_name }} @endif</b>
+                        <b> @if(auth()->user()->role == 'merchant')  in {{ Auth::user()->shop_name }} @endif</b>
 
                     </div>
                     <div class="dropdown">

@@ -55,7 +55,7 @@
         </div>
     </nav>
 
-    <div class="container mt-4">
+    <div class="container-fluid mt-4">
         <h2 class="text-center mb-4">Choose your product</h2>
 
         <!-- Category Tabs -->
